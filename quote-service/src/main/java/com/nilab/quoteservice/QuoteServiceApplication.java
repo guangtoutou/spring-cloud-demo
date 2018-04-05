@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableDiscoveryClient
 @SpringBootApplication
 @RestController
-@RequestMapping("quote")
+@RequestMapping("/quote")
 public class QuoteServiceApplication {
 	@Autowired
 	private RestTemplate restTemplate;
@@ -33,7 +33,7 @@ public class QuoteServiceApplication {
 	@RequestMapping("/{userid}")
 	public String getPrice(@PathVariable("userid") String userid){
 		ResponseEntity res = restTemplate
-				.exchange("http://user-service:8002/user/"+userid, HttpMethod.GET,null, String.class);
+				.exchange("http://localhost:8002/user/"+userid, HttpMethod.GET,null, String.class);
 		return "user " + res.getBody().toString().toUpperCase() + " are holding stocks as below:";
 	}
 }
