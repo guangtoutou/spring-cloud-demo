@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class QuoteServiceApplication {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@LoadBalanced
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder.build();
@@ -33,7 +35,7 @@ public class QuoteServiceApplication {
 	@RequestMapping("/{userid}")
 	public String getPrice(@PathVariable("userid") String userid){
 		ResponseEntity res = restTemplate
-				.exchange("http://localhost:8002/user/"+userid, HttpMethod.GET,null, String.class);
+				.exchange("http://user-service/user/"+userid, HttpMethod.GET,null, String.class);
 		return "user " + res.getBody().toString().toUpperCase() + " are holding stocks as below:";
 	}
 }
